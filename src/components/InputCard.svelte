@@ -46,12 +46,12 @@
 	<div class="date-row">
 		<label>
 			<p>Fra</p>
-			<input type="text" bind:value={cardData.from} on:input={updateCard} placeholder="" />
+			<input type="text" bind:value={cardData.from} on:input={updateCard} />
 		</label>
 
 		<label>
 			<p>Til</p>
-			<input type="text" bind:value={cardData.to} on:input={updateCard} placeholder="" />
+			<input type="text" bind:value={cardData.to} on:input={updateCard} />
 		</label>
 	</div>
 

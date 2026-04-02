@@ -5,12 +5,9 @@
 	import type { Card } from '../types/Card';
 	import jsPDF from 'jspdf';
 
-	// Helper: sjekk at verdi ikke er tom eller whitespace
-	const notEmpty = (value: string): boolean => value?.trim().length > 0;
-
 	const generatePDF = (): void => {
-		const doc = new jsPDF();
-		let y = 10;
+		const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+		let y = 20;
 
 		// --- Kontaktinformasjon ---
 		const contactFields = [
@@ -19,88 +16,119 @@
 			['E-post', get(email)],
 			['LinkedIn', get(linkedIn)],
 			['Webside', get(webpage)]
-		].filter(([_, value]) => notEmpty(value));
+		].filter(([_, value]): value is string => value.trim().length > 0);
 
-		if (contactFields.length > 0) {
-			doc.setFontSize(16);
-			doc.text('Kontaktinformasjon', 10, y);
-			y += 8;
+		if (contactFields.length) {
+			doc.setFont('helvetica', 'bold');
+			doc.setFontSize(18);
+			doc.text('Kontaktinformasjon', 105, y, { align: 'center' });
+			y += 10;
 
+			doc.setFont('helvetica', 'normal');
 			doc.setFontSize(12);
 			contactFields.forEach(([label, value]) => {
-				doc.text(`${label}: ${value}`, 10, y);
+				doc.text(`${label}: ${value}`, 105, y, { align: 'center' });
 				y += 6;
 			});
 
-			y += 6; // mellom kontakt og neste seksjon
+			y += 8;
 		}
 
-		// --- Funksjon for vanlige Card-seksjoner ---
 		const addSection = (title: string, list: Card[]) => {
-			if (list.length === 0) return;
+			if (!list.length) return;
 
+			doc.setFont('helvetica', 'bold');
 			doc.setFontSize(16);
 			doc.text(title, 10, y);
 			y += 8;
 
+			const pageWidth = 190; // A4 margin 10mm begge sider
+			const mainTitleWidth = 46; // maks bredde for titler
+			const valueX = 12 + mainTitleWidth + 3; // start x for verdier
+
 			list.forEach((card) => {
-				doc.setFontSize(12);
-
-				if (notEmpty(card.mainValue)) {
-					doc.text(`${card.mainTitle}: ${card.mainValue}`, 10, y);
-					y += 6;
+				// --- Hovedfelt ---
+				if (card.mainValue.trim().length) {
+					doc.setFont('helvetica', 'bold');
+					doc.text(`${card.mainTitle}:`, 12, y);
+					doc.setFont('helvetica', 'normal');
+					const mainValueLines = doc.splitTextToSize(card.mainValue, pageWidth - valueX - 10);
+					mainValueLines.forEach((line, i) => doc.text(line, valueX, y + i * 6));
+					y += mainValueLines.length * 6;
 				}
 
-				if (notEmpty(card.secondaryValue)) {
-					doc.text(`${card.secondaryTitle}: ${card.secondaryValue}`, 10, y);
-					y += 6;
+				// --- Sekundært felt ---
+				if (card.secondaryValue.trim().length) {
+					doc.setFont('helvetica', 'bold');
+					doc.text(`${card.secondaryTitle}:`, 12, y);
+					doc.setFont('helvetica', 'normal');
+					const secondaryLines = doc.splitTextToSize(card.secondaryValue, pageWidth - valueX - 10);
+					secondaryLines.forEach((line, i) => doc.text(line, valueX, y + i * 6));
+					y += secondaryLines.length * 6;
 				}
 
-				if (notEmpty(card.from) || notEmpty(card.to)) {
-					const period = `${card.from ?? ''}${card.from && card.to ? ' - ' : ''}${card.to ?? ''}`;
-					if (notEmpty(period)) {
-						doc.text(`Periode: ${period}`, 10, y);
+				// --- Remarks ---
+				if (card.remarks.trim().length) {
+					const lines = doc.splitTextToSize(card.remarks, pageWidth - 12);
+					doc.setFont('helvetica', 'italic');
+					lines.forEach((line) => {
+						doc.text(line, 12, y);
 						y += 6;
-					}
+					});
+					doc.setFont('helvetica', 'normal');
 				}
 
-				if (notEmpty(card.remarks)) {
-					const lines = doc.splitTextToSize(card.remarks, 180);
-					doc.text(lines, 10, y);
-					y += lines.length * 6;
+				// --- Fra–Til nederst ---
+				if (card.from.trim().length || card.to.trim().length) {
+					const fromValue = card.from.trim() || '-';
+					const toValue = card.to.trim() || '-';
+					const periodLine = `Periode: ${fromValue} – ${toValue}`;
+					doc.setFont('helvetica', 'italic');
+					doc.text(periodLine, 12, y);
+					doc.setFont('helvetica', 'normal');
+					y += 6;
 				}
 
-				y += 4; // mellom cards
+				y += 4; // mellom kort
+				if (y > 280) {
+					doc.addPage();
+					y = 20;
+				}
 			});
 
 			y += 6; // mellom seksjoner
 		};
 
-		// Legg til Card-seksjoner
-		addSection('Skoler', get(schools));
-		addSection('Utdanning', get(education));
+		// Legg til seksjoner
 		addSection('Arbeid', get(work));
+		addSection('Utdanning', get(education));
+		addSection('Skoler', get(schools));
 		addSection('Frivillig arbeid', get(vulentarely));
 		addSection('Annet', get(other));
 
-		doc.save('cv.pdf');
+		doc.save('CV.pdf');
 	};
 </script>
 
-<button class="pdf-button" on:click={generatePDF}> Generer PDF </button>
+<button class="pdf-button" on:click={generatePDF}>Generer PDF</button>
 
 <style lang="scss">
 	.pdf-button {
 		padding: 0.7rem 1.4rem;
-		background-color: white;
+		background-color: #f8f8f8;
 		color: #0b1f3a;
-		border: none;
+		border: 1px solid #ccc;
 		border-radius: 10px;
 		cursor: pointer;
 		font-size: 1rem;
+		font-weight: 500;
+		transition: all 0.2s ease;
 	}
 
 	.pdf-button:hover {
-		background-color: rgb(199, 198, 198);
+		background-color: #e2e2e2;
+		color: #0b1f3a;
+		transform: scale(1.02);
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 	}
 </style>
