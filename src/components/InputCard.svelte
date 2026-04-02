@@ -18,9 +18,20 @@
 		remarks: props.remarks ?? ''
 	};
 
+	const MAX_LENGTH = 500;
+
 	const updateCard = (): void => {
 		cardsStore.update((list) => {
-			list[index] = { ...cardData };
+			list[index] = {
+				id: cardData.id.slice(0, MAX_LENGTH),
+				mainTitle: cardData.mainTitle.slice(0, MAX_LENGTH),
+				mainValue: cardData.mainValue.slice(0, MAX_LENGTH),
+				secondaryTitle: cardData.secondaryTitle.slice(0, MAX_LENGTH),
+				secondaryValue: cardData.secondaryValue.slice(0, MAX_LENGTH),
+				from: cardData.from.slice(0, MAX_LENGTH),
+				to: cardData.to.slice(0, MAX_LENGTH),
+				remarks: cardData.remarks.slice(0, MAX_LENGTH)
+			};
 			return list;
 		});
 	};
