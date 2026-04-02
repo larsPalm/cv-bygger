@@ -8,6 +8,7 @@
 		<h2 class="logo-text">Fra palmtech</h2>
 		<p class="logo-text">La oss hjelpe deg lage/oppdatere din cv</p>
 		<Button text="Ny CV" href="/new"></Button>
+		<Button text="endre CV" href="/edit"></Button>
 	</div>
 </main>
 

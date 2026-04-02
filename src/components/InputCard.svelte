@@ -18,18 +18,18 @@
 		remarks: props.remarks ?? ''
 	};
 
-	const MAX_LENGTH = 500;
+	const MAX_LENGTH = 250;
 
 	const updateCard = (): void => {
 		cardsStore.update((list) => {
 			list[index] = {
 				id: cardData.id.slice(0, MAX_LENGTH),
-				mainTitle: cardData.mainTitle.slice(0, MAX_LENGTH),
-				mainValue: cardData.mainValue.slice(0, MAX_LENGTH),
-				secondaryTitle: cardData.secondaryTitle.slice(0, MAX_LENGTH),
-				secondaryValue: cardData.secondaryValue.slice(0, MAX_LENGTH),
-				from: cardData.from.slice(0, MAX_LENGTH),
-				to: cardData.to.slice(0, MAX_LENGTH),
+				mainTitle: cardData.mainTitle.slice(0, 50),
+				mainValue: cardData.mainValue.slice(0, 50),
+				secondaryTitle: cardData.secondaryTitle.slice(0, 50),
+				secondaryValue: cardData.secondaryValue.slice(0, 50),
+				from: cardData.from.slice(0, 10),
+				to: cardData.to.slice(0, 10),
 				remarks: cardData.remarks.slice(0, MAX_LENGTH)
 			};
 			return list;

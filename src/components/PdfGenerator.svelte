@@ -42,9 +42,9 @@
 			doc.text(title, 10, y);
 			y += 8;
 
-			const pageWidth = 190; // A4 margin 10mm begge sider
-			const mainTitleWidth = 46; // maks bredde for titler
-			const valueX = 12 + mainTitleWidth + 3; // start x for verdier
+			const pageWidth = 190;
+			const mainTitleWidth = 46;
+			const valueX = 12 + mainTitleWidth + 3;
 
 			list.forEach((card) => {
 				// --- Hovedfelt ---
@@ -62,18 +62,21 @@
 					doc.setFont('helvetica', 'bold');
 					doc.text(`${card.secondaryTitle}:`, 12, y);
 					doc.setFont('helvetica', 'normal');
-					const secondaryLines = doc.splitTextToSize(card.secondaryValue, pageWidth - valueX - 10);
-					secondaryLines.forEach((line, i) => doc.text(line, valueX, y + i * 6));
-					y += secondaryLines.length * 6;
+					const secValueLines = doc.splitTextToSize(card.secondaryValue, pageWidth - valueX - 10);
+					secValueLines.forEach((line, i) => doc.text(line, valueX, y + i * 6));
+					y += secValueLines.length * 6;
 				}
 
-				// --- Remarks ---
+				// --- Remarks (multi-linje med avsnitt) ---
 				if (card.remarks.trim().length) {
-					const lines = doc.splitTextToSize(card.remarks, pageWidth - 12);
+					const paragraphs = card.remarks.split('\n');
 					doc.setFont('helvetica', 'italic');
-					lines.forEach((line) => {
-						doc.text(line, 12, y);
-						y += 6;
+					paragraphs.forEach((paragraph) => {
+						const lines = doc.splitTextToSize(paragraph, pageWidth - 12);
+						lines.forEach((line) => {
+							doc.text(line, 12, y);
+							y += 6;
+						});
 					});
 					doc.setFont('helvetica', 'normal');
 				}
