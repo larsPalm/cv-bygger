@@ -79,11 +79,13 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+		padding-top: 1rem;
+		justify-content: center;
 	}
 
 	.tab-buttons {
 		display: flex;
-		gap: 0.5rem;
+		gap: 1rem;
 		flex-wrap: wrap;
 	}
 

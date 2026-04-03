@@ -32,12 +32,10 @@
 				const keywordsObj = infoDict.get(PDFName.of('Keywords'));
 				if (keywordsObj instanceof PDFString) {
 					keywords = keywordsObj.decodeText();
-				} else {
-					console.log('Keywords er ikke en PDFString:', keywordsObj);
 				}
 			}
 
-			console.log('Keywords:', keywords);
+			//console.log('Keywords:', keywords);
 
 			if (!keywords) {
 				uploadedStore.set(false);
@@ -80,20 +78,57 @@
 </div>
 
 <style>
+	div {
+		padding: 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+		max-width: 340px;
+	}
+
+	label {
+		font-weight: 600;
+		font-size: 0.9rem;
+		color: #0b1f3a;
+		letter-spacing: 0.02em;
+	}
+
 	input[type='file'] {
-		padding: 0.6rem 1rem;
-		border-radius: 6px;
-		border: 1px solid #ccc;
-		background: #f8f8f8;
+		padding: 0.65rem 0.85rem;
+		border-radius: 8px;
+		border: 1px solid #d6d6d6;
+		background: #fafafa;
 		color: #0b1f3a;
 		cursor: pointer;
+		font-size: 0.85rem;
+		transition: all 0.15s ease;
 	}
-	input[type='file']:hover {
-		background: #e2e2e2;
-	}
-	label {
+
+	input[type='file']::file-selector-button {
+		margin-right: 0.6rem;
+		padding: 0.45rem 0.7rem;
+		border-radius: 6px;
+		border: none;
+		background: #0b1f3a;
+		color: white;
+		font-size: 0.8rem;
 		font-weight: 500;
-		margin-bottom: 0.3rem;
-		display: inline-block;
+		cursor: pointer;
+		transition: background 0.15s ease;
+	}
+
+	input[type='file']::file-selector-button:hover {
+		background: #16335e;
+	}
+
+	input[type='file']:hover {
+		background: #f3f3f3;
+		border-color: #c9c9c9;
+	}
+
+	input[type='file']:focus {
+		outline: none;
+		border-color: #4a7cff;
+		box-shadow: 0 0 0 2px rgba(74, 124, 255, 0.15);
 	}
 </style>

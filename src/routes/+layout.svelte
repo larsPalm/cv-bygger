@@ -6,7 +6,6 @@
 	<main>
 		<slot />
 	</main>
-
 	<Footer />
 </div>
 
@@ -19,8 +18,7 @@
 	}
 
 	main {
-		flex: 1; /* tar opp all plass over footer */
-		display: flex;
-		justify-content: center;
+		flex: 1;
+		padding: 1rem;
 	}
 </style>

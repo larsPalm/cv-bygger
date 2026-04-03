@@ -17,8 +17,10 @@
 			<PdfGenerator />
 			<PdfPreview />
 		</div>
-		<ConctactInfo />
-		<ListToggler />
+		<div class="vertical-container">
+			<ConctactInfo />
+			<ListToggler />
+		</div>
 	</div>
 </main>
 

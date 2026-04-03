@@ -5,20 +5,10 @@
 	import PdfGenerator from '../../components/PdfGenerator.svelte';
 	import PdfPreview from '../../components/PdfPreview.svelte';
 	import PdfToStores from '../../components/PdfToStores.svelte';
-	import { education, schools, vulentarely, work } from '../../stores/cards';
-	import { derived } from 'svelte/store';
 	import { writable } from 'svelte/store';
 
 	// Track whether PDF has been uploaded
 	const pdfUploaded = writable(false);
-
-	// Show ListToggler if any store has length > 0
-	const showListToggler = derived(
-		[education, schools, vulentarely, work],
-		([$education, $schools, $vulentarely, $work]) =>
-			$pdfUploaded &&
-			($education.length > 0 || $schools.length > 0 || $vulentarely.length > 0 || $work.length > 0)
-	);
 </script>
 
 <main>
@@ -28,6 +18,7 @@
 
 		<!-- Only show PdfToStores if PDF hasn't been uploaded yet -->
 		{#if !$pdfUploaded}
+			<p class="logo-text">Til info, kun CV-er generert av denne nettsiden vil fungere</p>
 			<PdfToStores uploadedStore={pdfUploaded} />
 		{/if}
 
@@ -50,6 +41,11 @@
 		justify-content: center;
 		align-items: center;
 		background: #0b1f3a; /* navy blå */
+	}
+	.logo-text {
+		color: white; /* gjør teksten hvit */
+		margin-top: 1rem; /* legger litt plass mellom bildet og teksten */
+		font-size: 1.2rem;
 	}
 	.vertical-container {
 		display: flex;

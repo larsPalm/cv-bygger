@@ -1,25 +1,24 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	const currentYear = new Date().getFullYear(); // Get current year dynamically
+	const currentYear = new Date().getFullYear();
 
-	let footer: HTMLDivElement | null = null;
-	let isVisible = false; // Track footer visibility
+	let isVisible = false;
 
-	// Function to check if user has reached the bottom of the page
 	const checkIfBottom = () => {
-		if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
-			isVisible = true;
-		} else {
-			isVisible = false;
-		}
+		const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+		isVisible = scrollTop + clientHeight >= scrollHeight - 2;
 	};
 
-	// Mount the event listener when component loads
 	onMount(() => {
-		window.addEventListener('scroll', checkIfBottom); // Add scroll listener
+		checkIfBottom();
+
+		window.addEventListener('scroll', checkIfBottom);
+		window.addEventListener('resize', checkIfBottom);
+
 		return () => {
-			window.removeEventListener('scroll', checkIfBottom); // Cleanup event listener on destroy
+			window.removeEventListener('scroll', checkIfBottom);
+			window.removeEventListener('resize', checkIfBottom);
 		};
 	});
 </script>
@@ -36,34 +35,23 @@
 		background-color: #555;
 		color: #fff;
 		text-align: center;
-		padding: 10px;
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
+		padding: 1rem 2rem;
 		width: 100%;
 		font-size: 1rem;
 		box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-		transform: translateY(100%); /* Initially hidden */
-		transition: transform 0.3s ease;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-	}
-
-	.footer.visible {
-		transform: translateY(0); /* Shows footer when scrolled to the bottom */
 	}
 
 	.footer-content {
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		gap: 0.5rem;
 	}
 
 	.logo-img {
-		width: 60px; /* Adjust logo size */
+		width: 60px;
 		height: auto;
-		margin-right: 10px; /* Space between logo and text */
 	}
 </style>
