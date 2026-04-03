@@ -1,6 +1,9 @@
 <script>
 	import Button from '../../components/Button.svelte';
+	import ConctactInfo from '../../components/ConctactInfo.svelte';
 	import ListToggler from '../../components/ListToggler.svelte';
+	import PdfGenerator from '../../components/PdfGenerator.svelte';
+	import PdfPreview from '../../components/PdfPreview.svelte';
 	import PdfToStores from '../../components/PdfToStores.svelte';
 	import { education, schools, vulentarely, work } from '../../stores/cards';
 	import { derived } from 'svelte/store';
@@ -25,11 +28,16 @@
 
 		<!-- Only show PdfToStores if PDF hasn't been uploaded yet -->
 		{#if !$pdfUploaded}
-			<PdfToStores uploadedStore={$pdfUploaded} />
+			<PdfToStores uploadedStore={pdfUploaded} />
 		{/if}
 
 		<!-- Show ListToggler only if any store has items -->
-		{#if $showListToggler || $pdfUploaded}
+		{#if $pdfUploaded}
+			<div class="horizontal-container">
+				<PdfGenerator />
+				<PdfPreview />
+			</div>
+			<ConctactInfo />
 			<ListToggler />
 		{/if}
 	</div>

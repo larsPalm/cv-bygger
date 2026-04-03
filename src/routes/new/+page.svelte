@@ -4,6 +4,7 @@
 	import InputCardList from '../../components/InputCardList.svelte';
 	import ListToggler from '../../components/ListToggler.svelte';
 	import PdfGenerator from '../../components/PdfGenerator.svelte';
+	import PdfPreview from '../../components/PdfPreview.svelte';
 	import { education, schools, vulentarely, work } from '../../stores/cards';
 </script>
 
@@ -12,7 +13,10 @@
 		<img src="/cv-bygger-v3.png" alt="cv-bygger Logo" class="logo-img" />
 		<Button text="Tilbake til main" />
 		<p class="logo-text">Lag din nye cv under:</p>
-		<PdfGenerator />
+		<div class="horizontal-container">
+			<PdfGenerator />
+			<PdfPreview />
+		</div>
 		<ConctactInfo />
 		<ListToggler />
 	</div>
