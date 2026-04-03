@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Button from '../../components/Button.svelte';
 	import ConctactInfo from '../../components/ConctactInfo.svelte';
 	import ListToggler from '../../components/ListToggler.svelte';
@@ -6,6 +6,7 @@
 	import PdfPreview from '../../components/PdfPreview.svelte';
 	import PdfToStores from '../../components/PdfToStores.svelte';
 	import { writable } from 'svelte/store';
+	import { base } from '$app/paths';
 
 	// Track whether PDF has been uploaded
 	const pdfUploaded = writable(false);
@@ -13,7 +14,7 @@
 
 <main>
 	<div class="vertical-container">
-		<img src="/cv-bygger-v3.png" alt="cv-bygger Logo" class="logo-img" />
+		<img src={`${base}/cv-bygger-v3.png`} alt="cv-bygger Logo" class="logo-img" />
 		<Button text="Tilbake til main" />
 
 		<!-- Only show PdfToStores if PDF hasn't been uploaded yet -->
@@ -40,41 +41,40 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background: #0b1f3a; /* navy blå */
+		background: #0b1f3a;
 	}
+
 	.logo-text {
-		color: white; /* gjør teksten hvit */
-		margin-top: 1rem; /* legger litt plass mellom bildet og teksten */
+		color: white;
+		margin-top: 1rem;
 		font-size: 1.2rem;
+		text-align: center;
 	}
+
 	.vertical-container {
 		display: flex;
-		flex-direction: column; // stable elementene vertikalt
+		flex-direction: column;
 		gap: 1rem;
 		padding: 1rem 2rem;
 		border-radius: 12px;
-		align-items: center; // sentrerer innhold horisontalt
+		align-items: center;
 	}
 
 	.horizontal-container {
 		display: flex;
-		flex-direction: row; // elementene side-ved-side
+		flex-direction: row;
 		gap: 1rem;
 		padding: 1rem 2rem;
 		border-radius: 12px;
-		justify-content: center; // sentrerer horisontalt
-		align-items: center; // sentrerer vertikalt
+		justify-content: center;
+		align-items: center;
+		flex-wrap: wrap;
 	}
 
-	.logo-text {
-		color: white; /* gjør teksten hvit */
-		margin-top: 1rem; /* legger litt plass mellom bildet og teksten */
-		font-size: 1.2rem;
-	}
 	.logo-img {
-		width: 100px; /* juster størrelse på logo */
+		width: 100px;
 		height: auto;
-		display: block; /* gjør at bildet oppfører seg som blokk-element */
-		margin: 0 auto; /* sentrerer bildet horisontalt */
+		display: block;
+		margin: 0 auto;
 	}
 </style>

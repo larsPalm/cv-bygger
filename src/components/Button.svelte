@@ -1,6 +1,7 @@
 <!-- Button.svelte -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths'; // <-- hent base path
 
 	// Hent props med $props()
 	const props = $props();
@@ -8,7 +9,7 @@
 	const href: string = props.href ?? '/';
 
 	const handleClick = async () => {
-		await goto(href);
+		await goto(`${base}${href}`);
 	};
 </script>
 
