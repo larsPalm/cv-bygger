@@ -1,6 +1,6 @@
 <script lang="ts">
 	import InputCardList from './InputCardList.svelte';
-	import { writable, get } from 'svelte/store';
+	import { writable } from 'svelte/store';
 	import { schools, education, work, vulentarely } from '../stores/cards';
 	import type { Writable } from 'svelte/store';
 	import type { Card } from '../types/Card';
@@ -54,7 +54,7 @@
 <div class="toggle-tabs">
 	<div class="tab-buttons">
 		{#each tabs as tab, i}
-			<button on:click={() => setActive(i)} data-active={$activeTabIndex === i ? 'true' : 'false'}>
+			<button onclick={() => setActive(i)} data-active={$activeTabIndex === i ? 'true' : 'false'}>
 				{tab.title}
 			</button>
 		{/each}
@@ -78,39 +78,65 @@
 		width: 100%;
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
-		padding-top: 1rem;
+		gap: 1.1rem;
 		justify-content: center;
 	}
 
 	.tab-buttons {
 		display: flex;
-		gap: 1rem;
+		justify-content: center;
+		gap: 0.45rem;
 		flex-wrap: wrap;
+		width: fit-content;
+		max-width: 100%;
+		margin: 0 auto;
+		padding: 0.35rem;
+		border: 1px solid rgba(101, 164, 226, 0.18);
+		border-radius: 0.9rem;
+		background: rgba(4, 17, 36, 0.36);
 	}
 
 	.tab-buttons button {
-		padding: 0.5rem 1rem;
-		background-color: #f0f0f0;
-		border: none;
-		border-radius: 12px;
+		min-height: 2.6rem;
+		padding: 0.55rem 1rem;
+		background: transparent;
+		color: #d4e4f8;
+		border: 1px solid transparent;
+		border-radius: 0.62rem;
 		cursor: pointer;
-		font-weight: 500;
-		transition: all 0.2s;
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+		font-size: 0.92rem;
+		font-weight: 600;
+		transition:
+			background 0.2s ease,
+			color 0.2s ease,
+			box-shadow 0.2s ease;
 
 		&[data-active='true'] {
-			background-color: green;
+			background: linear-gradient(135deg, #1684ed, #0965c9);
 			color: white;
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+			box-shadow: 0 0.35rem 0.85rem rgba(4, 50, 106, 0.4);
 		}
 
 		&:hover:not([data-active='true']) {
-			background-color: #dcdcdc;
+			background: rgba(129, 182, 235, 0.12);
+			color: #ffffff;
+		}
+
+		&:focus-visible {
+			outline: 3px solid rgba(81, 198, 255, 0.45);
+			outline-offset: 1px;
 		}
 	}
 
 	.tab-content {
 		width: 100%;
+	}
+
+	@media (max-width: 540px) {
+		.tab-buttons {
+			width: 100%;
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
 	}
 </style>

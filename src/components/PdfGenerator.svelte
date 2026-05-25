@@ -24,13 +24,14 @@
 			}
 		};
 
-		const contactFields = [
+		const allContactFields: [string, string][] = [
 			['Navn', get(name)],
 			['Telefon', get(phone)],
 			['E-post', get(email)],
 			['LinkedIn', get(linkedIn)],
 			['Webside', get(webpage)]
-		].filter(([_, value]): value is string => value.trim().length > 0);
+		];
+		const contactFields = allContactFields.filter(([, value]) => value.trim().length > 0);
 
 		if (contactFields.length) {
 			doc.setFont('helvetica', 'bold');
@@ -63,7 +64,7 @@
 					doc.setFont('helvetica', 'bold');
 					doc.text(`${title}:`, 12, y);
 					doc.setFont('helvetica', 'normal');
-					const lines = doc.splitTextToSize(value, pageWidth - valueX - 10);
+					const lines = doc.splitTextToSize(value, pageWidth - valueX - 10) as string[];
 					lines.forEach((line, i) => doc.text(line, valueX, y + i * 6));
 					y += lines.length * 6;
 				};
@@ -75,7 +76,7 @@
 					const paragraphs = card.remarks.split('\n');
 					doc.setFont('helvetica', 'italic');
 					paragraphs.forEach((p) => {
-						const lines = doc.splitTextToSize(p, pageWidth - 12);
+						const lines = doc.splitTextToSize(p, pageWidth - 12) as string[];
 						lines.forEach((line) => {
 							doc.text(line, 12, y);
 							y += 6;
@@ -135,23 +136,44 @@
 	};
 </script>
 
-<button class="pdf-button" on:click={generatePDF}>Generer PDF</button>
+<button class="pdf-button" onclick={generatePDF}>Generer PDF</button>
 
 <style lang="scss">
 	.pdf-button {
-		padding: 0.7rem 1.4rem;
-		background-color: #f8f8f8;
-		color: #0b1f3a;
-		border: 1px solid #ccc;
-		border-radius: 10px;
+		min-height: 3rem;
+		padding: 0.7rem 1.35rem;
+		background: linear-gradient(135deg, #1583ec 0%, #0864c8 100%);
+		color: #ffffff;
+		border: 1px solid rgba(72, 183, 255, 0.42);
+		border-radius: 0.8rem;
 		cursor: pointer;
-		font-size: 1rem;
-		font-weight: 500;
-		transition: all 0.2s ease;
+		font-size: 0.98rem;
+		font-weight: 600;
+		box-shadow: 0 0.5rem 1.1rem rgba(2, 52, 115, 0.28);
+		transition:
+			background 0.2s ease,
+			box-shadow 0.2s ease,
+			transform 0.2s ease;
 	}
+
 	.pdf-button:hover {
-		background-color: #e2e2e2;
-		transform: scale(1.02);
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+		background: linear-gradient(135deg, #2894f5 0%, #0870da 100%);
+		box-shadow: 0 0.75rem 1.4rem rgba(2, 52, 115, 0.42);
+		transform: translateY(-1px);
+	}
+
+	.pdf-button:active {
+		transform: translateY(0);
+	}
+
+	.pdf-button:focus-visible {
+		outline: 3px solid rgba(81, 198, 255, 0.55);
+		outline-offset: 2px;
+	}
+
+	@media (max-width: 560px) {
+		.pdf-button {
+			width: 100%;
+		}
 	}
 </style>

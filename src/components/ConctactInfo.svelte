@@ -23,17 +23,17 @@
 <div class="info-form">
 	<label>
 		<p>Navn</p>
-		<input type="text" bind:value={localName} on:input={() => updateStore(name, localName)} />
+		<input type="text" bind:value={localName} oninput={() => updateStore(name, localName)} />
 	</label>
 
 	<label>
 		<p>Telefon</p>
-		<input type="text" bind:value={localPhone} on:input={() => updateStore(phone, localPhone)} />
+		<input type="text" bind:value={localPhone} oninput={() => updateStore(phone, localPhone)} />
 	</label>
 
 	<label>
 		<p>E-post</p>
-		<input type="email" bind:value={localEmail} on:input={() => updateStore(email, localEmail)} />
+		<input type="email" bind:value={localEmail} oninput={() => updateStore(email, localEmail)} />
 	</label>
 
 	<label>
@@ -41,7 +41,7 @@
 		<input
 			type="text"
 			bind:value={localLinkedIn}
-			on:input={() => updateStore(linkedIn, localLinkedIn)}
+			oninput={() => updateStore(linkedIn, localLinkedIn)}
 		/>
 	</label>
 
@@ -50,7 +50,7 @@
 		<input
 			type="text"
 			bind:value={localWebpage}
-			on:input={() => updateStore(webpage, localWebpage)}
+			oninput={() => updateStore(webpage, localWebpage)}
 		/>
 	</label>
 </div>
@@ -59,47 +59,66 @@
 	.info-form {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 0.9rem;
 		width: 100%;
-		max-width: 700px;
+		max-width: 46rem;
 		margin: 0 auto;
-		background: white;
-		padding: 2rem;
-		border-radius: 16px;
-		box-shadow:
-			0 10px 25px rgba(0, 0, 0, 0.25),
-			0 4px 10px rgba(0, 0, 0, 0.15);
+		background: #ffffff;
+		padding: clamp(1.1rem, 3vw, 1.7rem);
+		border: 1px solid #e1ebf6;
+		border-radius: 1.1rem;
+		box-shadow: 0 0.65rem 1.8rem rgba(2, 18, 39, 0.14);
 	}
 
 	label {
 		display: flex;
 		align-items: center;
-		gap: 0.8rem;
-		font-weight: 500;
+		gap: 1rem;
+		font-weight: 600;
 		color: #0b1f3a;
-		font-size: 0.95rem;
+		font-size: 0.9rem;
 		width: 100%;
-		box-sizing: border-box;
 	}
 
 	label p {
 		margin: 0;
-		width: 120px;
+		width: 6.8rem;
 		flex-shrink: 0;
+		letter-spacing: 0.01em;
 	}
 
 	input {
 		flex: 1;
-		padding: 0.5rem 0.8rem;
-		border: 1px solid #ccc;
-		border-radius: 8px;
-		font-size: 1rem;
+		min-height: 2.75rem;
+		padding: 0.65rem 0.85rem;
+		border: 1px solid #ccd9e7;
+		border-radius: 0.65rem;
+		background: #f8fbff;
+		color: #102640;
+		font-size: 0.96rem;
 		outline: none;
-		box-sizing: border-box;
 		width: 100%;
+		transition:
+			border-color 0.18s ease,
+			box-shadow 0.18s ease,
+			background 0.18s ease;
 	}
 
 	input:focus {
-		border-color: #0b1f3a;
+		border-color: #1282ed;
+		background: #ffffff;
+		box-shadow: 0 0 0 3px rgba(18, 130, 237, 0.13);
+	}
+
+	@media (max-width: 560px) {
+		label {
+			flex-direction: column;
+			align-items: stretch;
+			gap: 0.4rem;
+		}
+
+		label p {
+			width: auto;
+		}
 	}
 </style>

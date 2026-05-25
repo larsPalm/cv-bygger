@@ -2,105 +2,111 @@
 	import type { Writable } from 'svelte/store';
 	import type { Card as CardType } from '../types/Card';
 
-	const props = $props();
-
-	const index: number = props.index;
-	const cardsStore: Writable<CardType[]> = props.store;
-
-	let cardData: CardType = {
-		id: props.id ?? crypto.randomUUID(),
-		mainTitle: props.mainTitle ?? 'Main',
-		mainValue: props.mainValue ?? '',
-		secondaryTitle: props.secondaryTitle ?? 'Secondary',
-		secondaryValue: props.secondaryValue ?? '',
-		from: props.from ?? '',
-		to: props.to ?? '',
-		remarks: props.remarks ?? ''
-	};
+	let {
+		index,
+		store: cardsStore,
+		id = crypto.randomUUID(),
+		mainTitle = 'Main',
+		mainValue = '',
+		secondaryTitle = 'Secondary',
+		secondaryValue = '',
+		from = '',
+		to = '',
+		remarks = ''
+	}: {
+		index: number;
+		store: Writable<CardType[]>;
+		id?: string;
+		mainTitle?: string;
+		mainValue?: string;
+		secondaryTitle?: string;
+		secondaryValue?: string;
+		from?: string;
+		to?: string;
+		remarks?: string;
+	} = $props();
 
 	const MAX_LENGTH = 250;
 
 	const updateCard = (): void => {
 		cardsStore.update((list) => {
 			list[index] = {
-				id: cardData.id.slice(0, MAX_LENGTH),
-				mainTitle: cardData.mainTitle.slice(0, 50),
-				mainValue: cardData.mainValue.slice(0, 50),
-				secondaryTitle: cardData.secondaryTitle.slice(0, 50),
-				secondaryValue: cardData.secondaryValue.slice(0, 50),
-				from: cardData.from.slice(0, 10),
-				to: cardData.to.slice(0, 10),
-				remarks: cardData.remarks.slice(0, MAX_LENGTH)
+				id: id.slice(0, MAX_LENGTH),
+				mainTitle: mainTitle.slice(0, 50),
+				mainValue: mainValue.slice(0, 50),
+				secondaryTitle: secondaryTitle.slice(0, 50),
+				secondaryValue: secondaryValue.slice(0, 50),
+				from: from.slice(0, 10),
+				to: to.slice(0, 10),
+				remarks: remarks.slice(0, MAX_LENGTH)
 			};
 			return list;
 		});
 	};
 
 	const removeCard = (): void => {
-		cardsStore.update((list) => list.filter((c) => c.id !== cardData.id));
+		cardsStore.update((list) => list.filter((c) => c.id !== id));
 	};
 </script>
 
 <div class="card">
-	<button class="delete-btn" on:click={removeCard}>×</button>
+	<button class="delete-btn" onclick={removeCard}>×</button>
 
 	<label>
-		<p>{cardData.mainTitle}</p>
-		<input type="text" bind:value={cardData.mainValue} on:input={updateCard} />
+		<p>{mainTitle}</p>
+		<input type="text" bind:value={mainValue} oninput={updateCard} />
 	</label>
 
 	<label>
-		<p>{cardData.secondaryTitle}</p>
-		<input type="text" bind:value={cardData.secondaryValue} on:input={updateCard} />
+		<p>{secondaryTitle}</p>
+		<input type="text" bind:value={secondaryValue} oninput={updateCard} />
 	</label>
 
 	<div class="date-row">
 		<label>
 			<p>Fra</p>
-			<input type="text" bind:value={cardData.from} on:input={updateCard} />
+			<input type="text" bind:value={from} oninput={updateCard} />
 		</label>
 
 		<label>
 			<p>Til</p>
-			<input type="text" bind:value={cardData.to} on:input={updateCard} />
+			<input type="text" bind:value={to} oninput={updateCard} />
 		</label>
 	</div>
 
 	<label class="remarks">
 		<p>kommentar</p>
-		<textarea rows="3" bind:value={cardData.remarks} on:input={updateCard} />
+		<textarea rows="3" bind:value={remarks} oninput={updateCard}></textarea>
 	</label>
 </div>
 
 <style lang="scss">
 	.card {
 		position: relative;
-		background-color: white;
-		padding: 2rem;
-		border-radius: 12px;
-		box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-
+		background: #f7faff;
+		padding: clamp(1rem, 3vw, 1.45rem);
+		padding-top: clamp(2.4rem, 5vw, 2.6rem);
+		border: 1px solid #dde8f4;
+		border-radius: 0.9rem;
+		box-shadow: 0 0.2rem 0.65rem rgba(7, 27, 50, 0.05);
 		display: flex;
 		flex-direction: column;
 		gap: 0.8rem;
-
 		width: 100%;
-		box-sizing: border-box;
 	}
 
 	label {
 		display: flex;
 		align-items: center;
-		gap: 0.6rem;
-
-		font-weight: 500;
+		gap: 0.85rem;
+		font-weight: 600;
 		color: #0b1f3a;
 		font-size: 0.9rem;
 	}
 
 	label p {
 		margin: 0;
-		width: 110px;
+		width: 6.5rem;
 		flex-shrink: 0;
 	}
 
@@ -108,33 +114,41 @@
 	textarea {
 		flex: 1;
 		min-width: 0;
-
-		padding: 0.5rem 0.8rem;
-
-		border: 1px solid #ccc;
-		border-radius: 8px;
-
+		padding: 0.62rem 0.8rem;
+		border: 1px solid #ccd9e7;
+		border-radius: 0.6rem;
+		background: #ffffff;
+		color: #102640;
 		font-size: 0.95rem;
 		outline: none;
-
-		box-sizing: border-box;
 		width: 100%;
+		transition:
+			border-color 0.18s ease,
+			box-shadow 0.18s ease;
 	}
 
 	input:focus,
 	textarea:focus {
-		border-color: #0b1f3a;
+		border-color: #1282ed;
+		box-shadow: 0 0 0 3px rgba(18, 130, 237, 0.12);
 	}
 
-	/* Fra/Til som kolonne */
 	.date-row {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.8rem;
+		margin-left: calc(6.5rem + 0.85rem);
 	}
 
 	.date-row label {
-		flex: unset; /* tillater at labelene tilpasser høyde */
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0.4rem;
+		min-width: 0;
+	}
+
+	.date-row label p {
+		width: auto;
 	}
 
 	.remarks {
@@ -142,27 +156,56 @@
 	}
 
 	textarea {
+		min-height: 5.6rem;
 		resize: vertical;
 	}
 
 	.delete-btn {
 		position: absolute;
-		top: 8px;
-		right: 8px;
-
-		background: transparent;
-		border: none;
-
-		font-size: 1.2rem;
-		font-weight: bold;
-
+		top: 0.65rem;
+		right: 0.7rem;
+		display: grid;
+		place-items: center;
+		width: 1.75rem;
+		height: 1.75rem;
+		border: 1px solid transparent;
+		border-radius: 999px;
+		background: #fff1f2;
+		font-size: 1.15rem;
+		font-weight: 600;
 		cursor: pointer;
-		color: #ff4d4f;
-
-		transition: color 0.2s;
+		color: #c7293e;
+		transition:
+			color 0.2s ease,
+			background 0.2s ease,
+			border-color 0.2s ease;
 	}
 
 	.delete-btn:hover {
-		color: #ff0000;
+		color: #a31930;
+		background: #ffe3e7;
+		border-color: #f8bac4;
+	}
+
+	.delete-btn:focus-visible {
+		outline: 3px solid rgba(199, 41, 62, 0.2);
+		outline-offset: 1px;
+	}
+
+	@media (max-width: 620px) {
+		label,
+		.date-row label {
+			flex-direction: column;
+			align-items: stretch;
+			gap: 0.4rem;
+		}
+
+		label p {
+			width: auto;
+		}
+
+		.date-row {
+			margin-left: 0;
+		}
 	}
 </style>

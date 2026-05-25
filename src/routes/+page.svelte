@@ -17,50 +17,71 @@
 
 <style>
 	main {
-		min-height: 100vh;
+		min-height: 100svh;
+		width: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background: #0b1f3a;
-		padding: 2rem;
+		padding: clamp(1.25rem, 5vw, 3.5rem);
 	}
 
 	.container {
+		position: relative;
 		text-align: center;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 1rem;
-		max-width: 500px;
+		gap: 1.15rem;
+		max-width: 58rem;
 		width: 100%;
+		padding: clamp(1.25rem, 4vw, 2.5rem);
+		border: 1px solid rgba(119, 179, 239, 0.18);
+		border-radius: 1.5rem;
+		background: rgba(7, 22, 44, 0.42);
+		box-shadow: 0 1.5rem 4rem rgba(0, 7, 22, 0.34);
+		backdrop-filter: blur(10px);
 	}
 
 	.logo-img {
-		width: 80%;
-		max-width: 400px;
+		width: min(100%, 44rem);
 		height: auto;
-		border-radius: 12px;
-		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+		aspect-ratio: 3 / 2;
+		object-fit: cover;
+		border-radius: 1.1rem;
+		box-shadow:
+			0 1rem 2.5rem rgba(0, 6, 20, 0.4),
+			0 0 0 1px rgba(70, 172, 255, 0.12);
 	}
 
 	.logo-text {
-		color: #fff;
-		font-size: 2rem;
-		margin: 0;
+		margin: 0.6rem 0 0;
+		color: #56c7ff;
+		font-size: clamp(0.82rem, 1.4vw, 0.9rem);
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
 	}
 
 	.subtext {
-		color: #ddd;
-		font-size: 1.2rem;
+		max-width: 32rem;
+		color: #eaf3ff;
+		font-size: clamp(1.18rem, 2.8vw, 1.55rem);
+		font-weight: 500;
 		margin: 0;
 	}
 
 	.button-group {
 		display: flex;
-		flex-direction: row;
-		gap: 1rem;
-		margin-top: 1rem;
+		gap: 0.85rem;
+		margin-top: 0.65rem;
 		flex-wrap: wrap;
 		justify-content: center;
+	}
+
+	@media (max-width: 480px) {
+		.button-group {
+			width: 100%;
+			flex-direction: column;
+		}
 	}
 </style>
